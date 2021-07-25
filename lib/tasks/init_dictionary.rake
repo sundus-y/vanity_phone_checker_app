@@ -8,6 +8,7 @@ namespace :init do
     })
 
     redis = Redis.new
+    redis.flushall
     File.foreach('lib/tasks/sample_dictionary.txt') do |dictionary_word|
       dictionary_word.strip!
       if dictionary_word.length <= 10
