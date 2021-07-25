@@ -1,6 +1,12 @@
 class VpcController < ApplicationController
   def check
-    @words = [params[:phone_number]]
-    render json: @words
+    render json: Redis.new.smembers(clean_phone_number)
+  end
+
+  private
+  def clean_phone_number
+    phone_number = params[:phone_number]
+    phone_number.gsub!(/\D+/,"")
+    phone_number
   end
 end
