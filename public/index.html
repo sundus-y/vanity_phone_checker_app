@@ -3,13 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <title>Vanity Phone Checker</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vuex"></script>
 </head>
 <body>
     <h1>Vanity Phone Checker</h1>
-    <form>
-        <label>Enter phone number:</label>
-        <input/>
-        <button type="submit">Check</button>
-    </form>
+
+    <div id="vpc_app">
+        <form ref="vpc_from" v-on:submit="submit">
+            <label>Enter phone number:</label>
+            <input ref="phone_number" placeholder="###-###-####"/>
+            <button type="button" v-on:click="submit">Check</button>
+        </form>
+        <div v-if="possible_words.length > 0">
+            <h2>Possible Words:</h2>
+            <ul>
+                <li v-for="word in possible_words">
+                    {{word}}
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+    <script>
+        new Vue({
+            el: '#vpc_app',
+            data: {
+                possible_words: []
+            },
+            methods: {
+                submit: function(e) {
+                    e.preventDefault();
+                    const phone_number = this.$refs.phone_number.value;
+                    fetch(`check?phone_number=${phone_number}`)
+                        .then((response) => response.json())
+                        .then(data => this.possible_words = data);
+                }
+            }
+        })
+    </script>
 </body>
 </html>
