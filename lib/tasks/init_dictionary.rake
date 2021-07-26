@@ -13,9 +13,8 @@ namespace :init do
       dictionary_word.strip!
       if dictionary_word.length <= 10
         number_version = dictionary_word.gsub /\w/, LETTER_TO_NUMBER
-        words = redis.smembers(number_version)
+        words = JSON.parse(redis.get(number_version) || "[]")
         words << dictionary_word
-        redis.sadd(number_version, words)
       end
     end
   end

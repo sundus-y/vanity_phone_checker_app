@@ -1,6 +1,6 @@
 class VpcController < ApplicationController
   def check
-    render json: Redis.new.smembers(clean_phone_number)
+    render json: JSON.parse(Redis.new.get(clean_phone_number) || "[]")
   end
 
   private
