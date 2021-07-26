@@ -15,6 +15,7 @@ namespace :init do
         number_version = dictionary_word.gsub /\w/, LETTER_TO_NUMBER
         words = JSON.parse(redis.get(number_version) || "[]")
         words << dictionary_word
+        redis.set(number_version, words.to_json)
       end
     end
   end
