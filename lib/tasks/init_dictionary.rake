@@ -7,15 +7,14 @@ namespace :init do
       "w": "9", "x": "9", "y": "9", "z": "9"
     })
 
-    redis = Redis.new
-    redis.flushall
+    REDIS.flushall
     File.foreach('lib/tasks/words_dictionary.txt') do |dictionary_word|
       dictionary_word.strip!
       if dictionary_word.length <= 10
         number_version = dictionary_word.gsub /\w/, LETTER_TO_NUMBER
-        words = JSON.parse(redis.get(number_version) || "[]")
+        words = JSON.parse(REDIS.get(number_version) || "[]")
         words << dictionary_word
-        redis.set(number_version, words.to_json)
+        REDIS.set(number_version, words.to_json)
       end
     end
   end
